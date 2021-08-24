@@ -1,0 +1,34 @@
+server:
+  port: 3444
+
+zuul:
+  routes:
+    some-service:
+      stripPrefix: false
+      path: /mu/**
+      serviceId: measurement-unit
+    ipr:
+      stripPrefix: false
+        path: /ipr/**
+        serviceId: ipr
+  groovyFiltersPath:
+    - filter
+  prefixd: /api/vl
+
+some-service:
+  ribbon:
+    listOfServers: ${SOME_SERVICE}:${SOME_PORT}
+
+ipr:
+  ribbon:
+    listOfServers: ${IDENTITY_PROVIDER_SERVICE}:${IPS_PORT}
+
+ribbon:
+  ReadTimeout: ${RIBBON_READ_TIMEOUT}
+  ConnectTimeout: ${RIBBON_CONNECT_TIMEOUT}
+
+hystrix:
+  command:
+    execution:
+      timeout:
+        enabled: false
